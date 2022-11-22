@@ -15,6 +15,7 @@ public class ServidorUDP {
             System.out.println("Ouvindo no porto: \t" + portoServidor );
 
             int bS = 0;
+            int bE = 0;
             int totalBanda = 0;
             byte[] bytesEntrada = new byte[1000];
             byte[] bytesSaida = new byte[1000];
@@ -35,11 +36,12 @@ public class ServidorUDP {
                 portoCliente = recebe.getPort();
                 int bytesLidos = ByteBuffer.wrap(recebe.getData()).getInt();
                 totalBanda += bytesLidos;
+                bE +=1;
                 long tempo = System.currentTimeMillis() - inicio;
                 if (tempo > 0 && System.currentTimeMillis() % 10 == 0) {
                     System.out.println("Leu " + totalBanda + " bytes, Velocidade: " + ((totalBanda / tempo) / 1024) + "MB/s");
                 }
-            } while (totalBanda < 1000);
+            } while (bE < bytesEntrada.length);
 
             DatagramPacket envia;
 
