@@ -20,6 +20,8 @@ public class LarguraBandaServidorSessao implements Runnable {
 
         DataOutputStream saida;
         DataInputStream entrada;
+        int totalBanda = 0;
+        int indice = 0;
 
         try {
 
@@ -33,9 +35,10 @@ public class LarguraBandaServidorSessao implements Runnable {
                 b++;
             } while (b < bytes.length);
 
-            while (true) {
+            do {
                 saida.write(bytes);
-            }
+                totalBanda += bytes[indice];
+            } while (totalBanda < 400000000);
 
         } catch (Exception e) {    // CAPTURA algum problema caso ocorra (alguma trap - interrupção de software)
             System.err.println("ERRO: " + e.toString());
