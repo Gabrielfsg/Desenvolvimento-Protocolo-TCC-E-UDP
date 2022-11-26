@@ -33,11 +33,14 @@ public class VazaoServidorSessao implements Runnable{
                  bytesRecebidos += entrada.read(buffer);
                  tDecorrido = System.currentTimeMillis() - t0;
             } while(tDecorrido < 10000);
+            saida.flush();
 
             float vazao = (bytesRecebidos * 8) / (tDecorrido / 1000.0F);
 
             System.out.println("Vazão (Download) Servidor: " + vazao + " bit/s");
+            System.out.println(entrada.readUTF());
             saida.writeUTF("A vazão (UPLOAD) é de: " + vazao + " bit/s");
+            saida.flush();
 
             saida.close();
             entrada.close();
