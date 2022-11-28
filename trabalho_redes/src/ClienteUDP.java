@@ -19,7 +19,7 @@ public class ClienteUDP {
             System.out.println("Endereço do cliente: \t"+ endCliente  );
             System.out.println("Porto do cliente: \t"+ portoCliente );
 
-            InetAddress endServidor = InetAddress.getByName("DESKTOP-HO7UDGJ");
+            InetAddress endServidor = InetAddress.getByName("lar-linc-pc18");
             int portoServidor = Integer.parseInt("8484");
 
             byte[] bytesEntrada = new byte[10000];

@@ -1,8 +1,9 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
-public class VazaoServidorSessao implements Runnable{
+public class VazaoServidorSessao implements Runnable {
 
     private Socket controle;
 
@@ -10,7 +11,7 @@ public class VazaoServidorSessao implements Runnable{
 
     private String idSessao;
 
-    public VazaoServidorSessao(Socket controle, Socket dados, String idSessao){
+    public VazaoServidorSessao(Socket controle, Socket dados, String idSessao) {
         this.controle = controle;
         this.dados = dados;
         this.idSessao = idSessao;
@@ -26,21 +27,27 @@ public class VazaoServidorSessao implements Runnable{
 
         try {
 
-            saidaControle = new DataOutputStream( controle.getOutputStream());
-            entradaControle = new DataInputStream( controle.getInputStream());
-            saidaDados = new DataOutputStream( dados.getOutputStream());
-            entradaDados = new DataInputStream( dados.getInputStream());
+            saidaControle = new DataOutputStream(controle.getOutputStream());
+            entradaControle = new DataInputStream(controle.getInputStream());
+            saidaDados = new DataOutputStream(dados.getOutputStream());
+            entradaDados = new DataInputStream(dados.getInputStream());
+            dados.setSoTimeout(11 * 1000);
 
             byte[] buffer = new byte[100];
             int bytesRecebidos = 0;
-            long tDecorrido;
+            long tDecorrido = 0;
 
             long tInicial = System.currentTimeMillis();
-            do {
-                 bytesRecebidos += entradaDados.read(buffer);
-                 tDecorrido = System.currentTimeMillis() - tInicial;
-            } while(tDecorrido < 10000);
 
+            try {
+                do {
+                    bytesRecebidos += entradaDados.read(buffer);
+                    tDecorrido = System.currentTimeMillis() - tInicial;
+                } while (tDecorrido < 10000);
+            }catch (SocketTimeoutException socketTimeoutException){
+            } catch (Exception e) {
+                System.err.println("ERRO: " + e.toString());
+            }
             float vazao = (bytesRecebidos * 8) / (tDecorrido / 1000.0F);
 
             System.out.println("Vazão (Download) Servidor: " + vazao + " bit/s");
