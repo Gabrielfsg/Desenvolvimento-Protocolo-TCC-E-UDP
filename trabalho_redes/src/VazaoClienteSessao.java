@@ -9,59 +9,69 @@ public class VazaoClienteSessao implements Runnable {
     private String serverIP = "localhost";
     private int serverPort = 8585;
 
-    private Socket conexao;
+    private Socket controle;
+
+    private Socket dados;
 
     public VazaoClienteSessao(String idCliente, String serverIP, int serverPort) throws IOException {
         this.idCliente = idCliente;
         this.serverIP = serverIP;
         this.serverPort = serverPort;
-        this.conexao = new Socket(serverIP, serverPort);
+        this.controle = new Socket(serverIP, serverPort);
+        this.dados = new Socket(serverIP, serverPort);
     }
 
     @Override
     public void run() {
 
-        DataOutputStream saida;
-        DataInputStream entrada;
+        DataOutputStream saidaControle;
+        DataInputStream entradaControle;
+        DataOutputStream saidaDados;
+        DataInputStream entradaDados;
 
         try {
 
-            saida = new DataOutputStream( conexao.getOutputStream());
-            entrada = new DataInputStream( conexao.getInputStream());// outro
+            saidaControle = new DataOutputStream( controle.getOutputStream());
+            entradaControle = new DataInputStream( controle.getInputStream());
+            saidaDados = new DataOutputStream( dados.getOutputStream());
+            entradaDados = new DataInputStream( dados.getInputStream());
 
             int tamanhoBufeer = 100;
             byte[] buffer = new byte[tamanhoBufeer];
             int bytesEnviados = 0;
             long tDecorrido;
 
-            long t1;
-            long t2;
+            long tIEnvio;
+            long tFEnvio;
             float avg_rtt = 0;
 
-            long t0 = System.currentTimeMillis();
+            long tInicial = System.currentTimeMillis();
             do {
-                t1 = System.currentTimeMillis();
-                saida.write(buffer);
-                t2 = System.currentTimeMillis();
-                avg_rtt += t2 - t1;
+                tIEnvio = System.currentTimeMillis();
+                saidaDados.write(buffer);
+                tFEnvio = System.currentTimeMillis();
+                avg_rtt += tFEnvio - tIEnvio;
                 if( avg_rtt > 0.0){
                     avg_rtt = avg_rtt/2;
                 }
                 bytesEnviados += tamanhoBufeer;
-                tDecorrido = System.currentTimeMillis() - t0;
+                tDecorrido = System.currentTimeMillis() - tInicial;
             } while(tDecorrido < 10000);
-            saida.flush();
+            saidaDados.flush();
 
             float vazao = (bytesEnviados * 8) / (tDecorrido / 1000.0F);
 
             System.out.println("Vazão (UPLOAD) Cliente: " + vazao + " bit/s");
-            saida.writeUTF("A vazão (Download) é de: " + vazao + " bit/s");
-            saida.flush();
-            System.out.println(entrada.readUTF());
+            saidaControle.writeUTF("A vazão (Download) é de: " + vazao + " bit/s");
+            saidaControle.flush();
+            System.out.println(entradaControle.readUTF());
 
-            saida.close();
-            entrada.close();
-            conexao.close();
+            saidaControle.close();
+            entradaControle.close();
+            saidaDados.close();
+            entradaDados.close();
+            controle.close();
+            dados.close();
 
         } catch (Exception e) {    // CAPTURA algum problema caso ocorra (alguma trap - interrupção de software)
             System.err.println("ERRO: " + e.toString());

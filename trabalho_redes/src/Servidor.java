@@ -7,7 +7,8 @@ public class Servidor {
         // soquete onde o servidor irá ouvir requisições
         ServerSocket serverSocket;
         // conexão a ser estabelecida com um cliente
-        Socket conexao;
+        Socket controle;
+        Socket dados;
 
         boolean flagContinua = true;
 
@@ -20,13 +21,14 @@ public class Servidor {
             while( flagContinua ) {
 
                 try {
-                    conexao = serverSocket.accept();
+                    controle = serverSocket.accept();
+                    dados = serverSocket.accept();
                     contador++;
 
-                    System.out.println("+++ cria a sessao nº " + contador + " para atender o novo cliente (" + conexao.getInetAddress() + "," + conexao.getPort() + ")" );
-                    //Runnable sessao = new VazaoServidorSessao(conexao,"sessão[" + contador + "]");
-                    Runnable sessao = new LarguraBandaServidorSessao(conexao,"sessão[" + contador + "]");
-                    //Runnable sessao = new LatenciaServidorSessao(conexao,"sessão[" + contador + "]");
+                    System.out.println("+++ cria a sessao nº " + contador + " para atender o novo cliente (" + controle.getInetAddress() + "," + controle.getPort() + ")" );
+                    Runnable sessao = new VazaoServidorSessao(controle, dados,"sessão[" + contador + "]");
+                    //Runnable sessao = new LarguraBandaServidorSessao(controle,"sessão[" + contador + "]");
+                    //Runnable sessao = new LatenciaServidorSessao(controle,"sessão[" + contador + "]");
                     Thread t = new Thread( sessao );
                     t.start();
 
