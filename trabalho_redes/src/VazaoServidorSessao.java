@@ -61,6 +61,7 @@ public class VazaoServidorSessao implements Runnable {
             saidaControle.flush();
             String verificaSePodeEnviar = entradaControle.readUTF();
             if (verificaSePodeEnviar.equals("OKE")) {
+                System.out.println("Começou a enviar");
                 try {
                     long tInicial2 = System.currentTimeMillis();
                     do {

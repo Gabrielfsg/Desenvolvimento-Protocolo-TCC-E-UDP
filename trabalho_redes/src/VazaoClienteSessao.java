@@ -72,17 +72,18 @@ public class VazaoClienteSessao implements Runnable {
             saidaControle.writeUTF("OKE");
             saidaControle.flush();
             if (verificaSePodeReceber.equals("OKR")) {
+                System.out.println("Começou a receber");
                 try {
                     do {
                         bytesRecebidos += entradaDados.read(buffer);
                         tDecorrido = System.currentTimeMillis() - tInicial;
                     } while (tDecorrido < 10000);
+                    vazao = (bytesRecebidos * 8) / (tDecorrido / 1000.0F);
+                    System.out.println("Vazão (Download) Cliente: " + vazao + " bit/s");
                 } catch (SocketTimeoutException socketTimeoutException) {
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }
-                vazao = (bytesRecebidos * 8) / (tDecorrido / 1000.0F);
-                System.out.println("Vazão (Download) Cliente: " + vazao + " bit/s");
             }
 
             String verificaSePodeFinalizar = entradaControle.readUTF();
