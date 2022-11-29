@@ -73,8 +73,6 @@ public class ServidorUDP {
 
                     vazao = (bytesEnviados * 8) / (tDecorrido2 / 1000.0F);
                     System.out.println("Vazão (UPLOAD) Servidor: " + vazao + " bit/s");
-                    saidaControle.writeUTF("CF");
-                    saidaControle.flush();
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }
