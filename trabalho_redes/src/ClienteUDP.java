@@ -24,6 +24,7 @@ public class ClienteUDP {
 
             InetAddress endServidor = InetAddress.getByName("lar-linc-pc19.local");
             int portoServidor = Integer.parseInt("8585");
+            int portoServidorTCP = Integer.parseInt("8586");
 
             byte[] bytesEntrada = new byte[10000];
             byte[] bytesSaida = new byte[10000];
@@ -32,7 +33,7 @@ public class ClienteUDP {
             long bytesEnviados = 0;
             long bytesLidos = 0;
             float vazao = 0;
-            Socket controle = new Socket(endServidor, portoServidor);
+            Socket controle = new Socket(endServidor, portoServidorTCP);
             DataOutputStream saidaControle = new DataOutputStream(controle.getOutputStream());
             DataInputStream entradaControle = new DataInputStream(controle.getInputStream());
 

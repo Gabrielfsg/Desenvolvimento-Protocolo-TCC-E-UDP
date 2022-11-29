@@ -1,10 +1,7 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.math.BigInteger;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.Socket;
+import java.net.*;
 import java.nio.ByteBuffer;
 
 public class ServidorUDP {
@@ -27,7 +24,9 @@ public class ServidorUDP {
             long bytesEnviados = 0;
             float vazao = 0;
             long bytesLidos = 0;
-            Socket controle = new Socket("lar-linc-pc19.local", portoServidor);
+            ServerSocket serverSocket = new ServerSocket(8586);
+            Socket controle;
+            controle = serverSocket.accept();
             DataOutputStream saidaControle = new DataOutputStream(controle.getOutputStream());
             DataInputStream entradaControle = new DataInputStream(controle.getInputStream());
 
