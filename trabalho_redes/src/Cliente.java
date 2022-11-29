@@ -5,7 +5,7 @@ public class Cliente {
         Runnable cliente;
         Thread t;
         String serverIP = "lar-linc-pc19.local";
-        int serverPort = 8585;
+        int serverPort = 9500;
         try {
             //cliente = new VazaoClienteSessao("cliente[1]", serverIP, serverPort);
             cliente = new LatenciaClienteSessao("cliente[1]", serverIP, serverPort);
