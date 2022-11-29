@@ -42,6 +42,7 @@ public class VazaoClienteSessao implements Runnable {
             byte[] buffer = new byte[tamanhoBufeer];
             long bytesEnviados = 0;
             long tDecorrido = 0;
+            long tDecorrido2 = 0;
             long bytesRecebidos = 0;
             long tIEnvio;
             long tFEnvio;
@@ -73,11 +74,12 @@ public class VazaoClienteSessao implements Runnable {
             saidaControle.flush();
             if (verificaSePodeReceber.equals("OKR")) {
                 System.out.println("Começou a receber");
+                long tInicial2 = System.currentTimeMillis();
                 try {
                     do {
                         bytesRecebidos += entradaDados.read(buffer);
-                        tDecorrido = System.currentTimeMillis() - tInicial;
-                    } while (tDecorrido < 10000);
+                        tDecorrido2 = System.currentTimeMillis() - tInicial2;
+                    } while (tDecorrido2 < 10000);
                     vazao = (bytesRecebidos * 8) / (tDecorrido / 1000.0F);
                     System.out.println("Vazão (Download) Cliente: " + vazao + " bit/s");
                 } catch (SocketTimeoutException socketTimeoutException) {
