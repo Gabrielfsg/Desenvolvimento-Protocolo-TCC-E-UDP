@@ -76,6 +76,8 @@ public class ServidorUDP {
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }
+                saidaControle.writeUTF("CF");
+                saidaControle.flush();
             }
 
         } catch (Exception e) {
