@@ -7,8 +7,8 @@ import java.net.SocketTimeoutException;
 public class VazaoClienteSessao implements Runnable {
 
     private String idCliente;
-    private String serverIP = "lar-linc-pc19.local";
-    private int serverPort = 8585;
+    private String serverIP;
+    private int serverPort;
 
     private Socket controle;
 
@@ -98,7 +98,7 @@ public class VazaoClienteSessao implements Runnable {
                 dados.close();
             }
 
-        } catch (Exception e) {    // CAPTURA algum problema caso ocorra (alguma trap - interrupção de software)
+        } catch (Exception e) {
             System.err.println("ERRO: " + e.toString());
         }
 

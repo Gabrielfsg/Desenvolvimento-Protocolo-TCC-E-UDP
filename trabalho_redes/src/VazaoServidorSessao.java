@@ -92,7 +92,7 @@ public class VazaoServidorSessao implements Runnable {
             controle.close();
             dados.close();
 
-        } catch (Exception e) {    // CAPTURA algum problema caso ocorra (alguma trap - interrupção de software)
+        } catch (Exception e) {
             System.err.println("ERRO: " + e.toString());
         }
     }
