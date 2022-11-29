@@ -63,14 +63,14 @@ public class ClienteUDP {
             for (int i = 0; i < bytesEntrada.length; i++) {
                 bytesEntrada[i] = 0;
             }
-
+            DatagramPacket recebe;
             String verificaSePodeReceber = entradaControle.readUTF();
             saidaControle.writeUTF("OKE");
             saidaControle.flush();
             if (verificaSePodeReceber.equals("OKR")) {
                 System.out.println("Começou a receber");
                 try {
-                    DatagramPacket recebe = new DatagramPacket(bytesEntrada, bytesEntrada.length);
+                     recebe = new DatagramPacket(bytesEntrada, bytesEntrada.length);
                     long tInicial2 = System.currentTimeMillis();
                     do {
                         socket.receive(recebe);
@@ -81,6 +81,7 @@ public class ClienteUDP {
                     vazao = (bytesLidos * 8) / (tDecorrido2 / 1000.0F);
                     System.out.println("Vazão (DOWNLOAD) Cliente: " + vazao + " bit/s");
                 }catch (EOFException fim) {
+                    System.out.println("F");
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }
