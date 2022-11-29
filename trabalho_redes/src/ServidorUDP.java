@@ -78,6 +78,10 @@ public class ServidorUDP {
                 }
                 saidaControle.writeUTF("CF");
                 saidaControle.flush();
+
+                saidaControle.close();
+                entradaControle.close();
+                controle.close();
             }
 
         } catch (Exception e) {
