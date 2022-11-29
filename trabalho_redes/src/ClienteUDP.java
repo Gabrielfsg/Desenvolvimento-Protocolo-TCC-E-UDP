@@ -1,5 +1,6 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.math.BigInteger;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -79,6 +80,7 @@ public class ClienteUDP {
 
                     vazao = (bytesLidos * 8) / (tDecorrido2 / 1000.0F);
                     System.out.println("Vazão (DOWNLOAD) Cliente: " + vazao + " bit/s");
+                }catch (EOFException fim) {
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }
