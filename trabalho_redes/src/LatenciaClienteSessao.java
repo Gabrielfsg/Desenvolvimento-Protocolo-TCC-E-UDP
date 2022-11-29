@@ -9,13 +9,13 @@ public class LatenciaClienteSessao implements Runnable{
     private String serverIP;
     private int serverPort;
 
-    private Socket conexao;
+    private Socket dados;
 
     public LatenciaClienteSessao(String idCliente, String serverIP, int serverPort) throws IOException {
         this.idCliente = idCliente;
         this.serverIP = serverIP;
         this.serverPort = serverPort;
-        this.conexao = new Socket(serverIP, serverPort);
+        this.dados = new Socket(serverIP, serverPort);
     }
 
     @Override
@@ -27,8 +27,8 @@ public class LatenciaClienteSessao implements Runnable{
 
         try {
 
-            saida = new DataOutputStream(conexao.getOutputStream());
-            entrada = new DataInputStream(conexao.getInputStream());
+            saida = new DataOutputStream(dados.getOutputStream());
+            entrada = new DataInputStream(dados.getInputStream());
 
             int byteEnviado = 1;
             long t0 = System.currentTimeMillis();
@@ -39,7 +39,7 @@ public class LatenciaClienteSessao implements Runnable{
 
             saida.close();
             entrada.close();
-            conexao.close();
+            dados.close();
 
         } catch (Exception e) {
             System.err.println("ERRO: " + e.toString());

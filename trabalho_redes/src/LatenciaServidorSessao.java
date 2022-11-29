@@ -4,12 +4,12 @@ import java.net.Socket;
 
 public class LatenciaServidorSessao implements Runnable{
 
-    private Socket conexao;
+    private Socket dados;
 
     private String idSessao;
 
-    public LatenciaServidorSessao(Socket conexao, String idSessao){
-        this.conexao = conexao;
+    public LatenciaServidorSessao(Socket dados, String idSessao){
+        this.dados = dados;
         this.idSessao = idSessao;
     }
 
@@ -22,8 +22,8 @@ public class LatenciaServidorSessao implements Runnable{
 
         try {
 
-            saida = new DataOutputStream(conexao.getOutputStream());
-            entrada = new DataInputStream(conexao.getInputStream());
+            saida = new DataOutputStream(dados.getOutputStream());
+            entrada = new DataInputStream(dados.getInputStream());
 
             int byteEnviado = 1;
             long t0 = System.currentTimeMillis();
@@ -34,7 +34,7 @@ public class LatenciaServidorSessao implements Runnable{
 
             saida.close();
             entrada.close();
-            conexao.close();
+            dados.close();
 
         } catch (Exception e) {
             System.err.println("ERRO: " + e.toString());
