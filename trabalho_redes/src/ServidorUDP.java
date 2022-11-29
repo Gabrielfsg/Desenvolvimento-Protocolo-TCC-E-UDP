@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
 public class ServidorUDP {
     public static void main(String[] args) {
         try {
-            DatagramSocket socket = new DatagramSocket(8484);
+            DatagramSocket socket = new DatagramSocket(8585);
             System.out.printf("Server Start");
             String endServidor = InetAddress.getLocalHost().getHostName();
             int portoServidor = socket.getLocalPort();
@@ -27,7 +27,7 @@ public class ServidorUDP {
             long bytesEnviados = 0;
             float vazao = 0;
             long bytesLidos = 0;
-            Socket controle = new Socket(endServidor, portoServidor);
+            Socket controle = new Socket("lar-linc-pc19.local", portoServidor);
             DataOutputStream saidaControle = new DataOutputStream(controle.getOutputStream());
             DataInputStream entradaControle = new DataInputStream(controle.getInputStream());
 

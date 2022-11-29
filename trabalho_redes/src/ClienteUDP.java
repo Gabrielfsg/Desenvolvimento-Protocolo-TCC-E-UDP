@@ -22,8 +22,8 @@ public class ClienteUDP {
             System.out.println("Endereço do cliente: \t" + endCliente);
             System.out.println("Porto do cliente: \t" + portoCliente);
 
-            InetAddress endServidor = InetAddress.getByName("lar-linc-pc18");
-            int portoServidor = Integer.parseInt("8484");
+            InetAddress endServidor = InetAddress.getByName("lar-linc-pc19.local");
+            int portoServidor = Integer.parseInt("8585");
 
             byte[] bytesEntrada = new byte[10000];
             byte[] bytesSaida = new byte[10000];
