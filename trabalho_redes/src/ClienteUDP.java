@@ -87,6 +87,8 @@ public class ClienteUDP {
 
             String verificaSePodeFinalizar = entradaControle.readUTF();
             if (verificaSePodeFinalizar.equals("CF")) {
+                saidaControle.writeUTF("CF2");
+                saidaControle.flush();
                 saidaControle.close();
                 entradaControle.close();
                 controle.close();

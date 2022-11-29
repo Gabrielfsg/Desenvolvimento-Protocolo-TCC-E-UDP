@@ -78,10 +78,12 @@ public class ServidorUDP {
                 }
                 saidaControle.writeUTF("CF");
                 saidaControle.flush();
-
-                saidaControle.close();
-                entradaControle.close();
-                controle.close();
+                String verificaSePodeFinalizar = entradaControle.readUTF();
+                if (verificaSePodeFinalizar.equals("CF2")) {
+                    saidaControle.close();
+                    entradaControle.close();
+                    controle.close();
+                }
             }
 
         } catch (Exception e) {
