@@ -105,3 +105,6 @@ public class VazaoClienteSessao implements Runnable {
     }
 }
 
+// if (vazao >= 1024) { vazao /= 1024 (float) ; uniade="K"}
+// if (vazao >= 1024) { vazao /= 1024 (float) ; uniade="M"}
+// if (vazao >= 1024) { vazao /= 1024 (float) ; uniade="G"}
