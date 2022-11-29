@@ -34,13 +34,13 @@ public class VazaoServidorSessao implements Runnable {
             dados.setSoTimeout(11 * 1000);
 
             byte[] buffer = new byte[100];
-            int bytesRecebidos = 0;
+            long bytesRecebidos = 0;
             long tDecorrido = 0;
             long tDecorrido2 = 0;
             long tIEnvio;
             long tFEnvio;
             float avg_rtt = 0;
-            int bytesEnviados = 0;
+            long bytesEnviados = 0;
             int tamanhoBufeer = 100;
 
             long tInicial = System.currentTimeMillis();
@@ -74,7 +74,7 @@ public class VazaoServidorSessao implements Runnable {
                         }
                         bytesEnviados += tamanhoBufeer;
                         tDecorrido2 = System.currentTimeMillis() - tInicial2;
-                    } while (tDecorrido < 10000);
+                    } while (tDecorrido2 < 10000);
                     saidaDados.flush();
                     vazao = (bytesEnviados * 8) / (tDecorrido2 / 1000.0F);
                     System.out.println("Vazão (UPLOAD) Servidor: " + vazao + " bit/s");

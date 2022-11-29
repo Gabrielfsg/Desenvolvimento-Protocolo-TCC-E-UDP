@@ -4,7 +4,7 @@ public class Cliente {
     public static void main( String args[]  ) {
         Runnable cliente;
         Thread t;
-        String serverIP = "localhost";
+        String serverIP = "lar-linc-pc19.local";
         int serverPort = 8585;
         try {
             cliente = new VazaoClienteSessao("cliente[1]", serverIP, serverPort);

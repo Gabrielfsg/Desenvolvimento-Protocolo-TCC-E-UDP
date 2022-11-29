@@ -7,7 +7,7 @@ import java.net.SocketTimeoutException;
 public class VazaoClienteSessao implements Runnable {
 
     private String idCliente;
-    private String serverIP = "localhost";
+    private String serverIP = "lar-linc-pc19.local";
     private int serverPort = 8585;
 
     private Socket controle;
@@ -40,9 +40,9 @@ public class VazaoClienteSessao implements Runnable {
 
             int tamanhoBufeer = 100;
             byte[] buffer = new byte[tamanhoBufeer];
-            int bytesEnviados = 0;
+            long bytesEnviados = 0;
             long tDecorrido = 0;
-            int bytesRecebidos = 0;
+            long bytesRecebidos = 0;
             long tIEnvio;
             long tFEnvio;
             float avg_rtt = 0;
