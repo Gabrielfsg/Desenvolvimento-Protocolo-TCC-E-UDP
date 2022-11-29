@@ -61,24 +61,27 @@ public class VazaoServidorSessao implements Runnable {
             saidaControle.flush();
             String verificaSePodeEnviar = entradaControle.readUTF();
             if (verificaSePodeEnviar.equals("OKE")) {
-                long tInicial2 = System.currentTimeMillis();
-                do {
-                    tIEnvio = System.currentTimeMillis();
-                    saidaDados.write(buffer);
-                    tFEnvio = System.currentTimeMillis();
-                    avg_rtt += tFEnvio - tIEnvio;
-                    if (avg_rtt > 0.0) {
-                        avg_rtt = avg_rtt / 2;
-                    }
-                    bytesEnviados += tamanhoBufeer;
-                    tDecorrido2 = System.currentTimeMillis() - tInicial2;
-                } while (tDecorrido < 10000);
-                saidaDados.flush();
-
-                vazao = (bytesEnviados * 8) / (tDecorrido2 / 1000.0F);
-                System.out.println("Vazão (UPLOAD) Servidor: " + vazao + " bit/s");
-                saidaControle.writeUTF("CF");
-                saidaControle.flush();
+                try {
+                    long tInicial2 = System.currentTimeMillis();
+                    do {
+                        tIEnvio = System.currentTimeMillis();
+                        saidaDados.write(buffer);
+                        tFEnvio = System.currentTimeMillis();
+                        avg_rtt += tFEnvio - tIEnvio;
+                        if (avg_rtt > 0.0) {
+                            avg_rtt = avg_rtt / 2;
+                        }
+                        bytesEnviados += tamanhoBufeer;
+                        tDecorrido2 = System.currentTimeMillis() - tInicial2;
+                    } while (tDecorrido < 10000);
+                    saidaDados.flush();
+                    vazao = (bytesEnviados * 8) / (tDecorrido2 / 1000.0F);
+                    System.out.println("Vazão (UPLOAD) Servidor: " + vazao + " bit/s");
+                    saidaControle.writeUTF("CF");
+                    saidaControle.flush();
+                } catch (Exception e) {
+                    System.err.println("ERRO: " + e.toString());
+                }
             }
 
             saidaControle.close();
