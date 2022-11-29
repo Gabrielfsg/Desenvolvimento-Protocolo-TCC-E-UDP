@@ -80,8 +80,6 @@ public class ClienteUDP {
 
                     vazao = (bytesLidos * 8) / (tDecorrido2 / 1000.0F);
                     System.out.println("Vazão (DOWNLOAD) Cliente: " + vazao + " bit/s");
-                }catch (EOFException fim) {
-                    System.out.println("F");
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }
