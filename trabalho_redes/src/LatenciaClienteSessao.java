@@ -6,8 +6,8 @@ import java.net.Socket;
 public class LatenciaClienteSessao implements Runnable{
 
     private String idCliente;
-    private String serverIP = "localhost";
-    private int serverPort = 8585;
+    private String serverIP;
+    private int serverPort;
 
     private Socket conexao;
 
