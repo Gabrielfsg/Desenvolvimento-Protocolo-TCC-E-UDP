@@ -78,6 +78,7 @@ public class VazaoServidorSessao implements Runnable {
                     saidaDados.flush();
                     vazao = (bytesEnviados * 8) / (tDecorrido2 / 1000.0F);
                     System.out.println("Vazão (UPLOAD) Servidor: " + vazao + " bit/s");
+                    System.out.println("Razão do Tempo de Transferência" + avg_rtt + "/ms");
                     saidaControle.writeUTF("CF");
                     saidaControle.flush();
                 } catch (Exception e) {
