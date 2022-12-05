@@ -22,18 +22,18 @@ public class ClienteUDP {
 
             System.out.println("Endereço do cliente: \t" + endCliente);
             System.out.println("Porto do cliente: \t" + portoCliente);
-
-            InetAddress endServidor = InetAddress.getByName("lar-linc-pc19.local");
-            int portoServidor = Integer.parseInt("8585");
+            Util util = new Util();
+            InetAddress endServidor = InetAddress.getByName(endCliente);
+            int portoServidor = Integer.parseInt("8587");
             int portoServidorTCP = Integer.parseInt("8586");
-
+            CalculoCliente calculoCliente = new CalculoCliente();
             byte[] bytesEntrada = new byte[10000];
             byte[] bytesSaida = new byte[10000];
             long tDecorrido = 0;
             long tDecorrido2 = 0;
             long bytesEnviados = 0;
             long bytesLidos = 0;
-            float vazao = 0;
+            float vazaoD = 0,vazaoU = 0;
             Socket controle = new Socket(endServidor, portoServidorTCP);
             DataOutputStream saidaControle = new DataOutputStream(controle.getOutputStream());
             DataInputStream entradaControle = new DataInputStream(controle.getInputStream());
@@ -57,8 +57,8 @@ public class ClienteUDP {
                 System.err.println("ERRO: " + e.toString());
             }
 
-            vazao = (bytesEnviados * 8) / (tDecorrido / 1000.0F);
-            System.out.println("Vazão (UPLOAD) Cliente: " + vazao + " bit/s");
+            vazaoU = util.bytesConvert(bytesEnviados) / (tDecorrido / 1000.0F);
+            System.out.println("Vazão (UPLOAD) Cliente: " + vazaoU + " mb/s");
 
             for (int i = 0; i < bytesEntrada.length; i++) {
                 bytesEntrada[i] = 0;
@@ -78,8 +78,9 @@ public class ClienteUDP {
                         bytesLidos += ByteBuffer.wrap(recebe.getData()).getInt();
                     } while (tDecorrido2 < 10000);
 
-                    vazao = (bytesLidos * 8) / (tDecorrido2 / 1000.0F);
-                    System.out.println("Vazão (DOWNLOAD) Cliente: " + vazao + " bit/s");
+                    vazaoD = util.bytesConvert(bytesLidos) / (tDecorrido2 / 1000.0F);
+                    System.out.println("Vazão (DOWNLOAD) Cliente: " + vazaoD + " mb/s");
+                    Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraCliente.txt", Float.toString(vazaoU), Float.toString(vazaoD));
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }
@@ -88,6 +89,7 @@ public class ClienteUDP {
             String verificaSePodeFinalizar = entradaControle.readUTF();
             if (verificaSePodeFinalizar.equals("CF")) {
                 saidaControle.writeUTF("CF2");
+                calculoCliente.razaoTempoTransferencia();
                 saidaControle.flush();
                 saidaControle.close();
                 entradaControle.close();

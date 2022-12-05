@@ -44,7 +44,7 @@ public class LatenciaClienteSessao implements Runnable{
             long tDecorrido = System.currentTimeMillis();
             saidaControle.writeUTF("REC");
             saidaControle.flush();
-            System.out.println("Latência Cliente: " + (tDecorrido - t0) + "ms");
+            System.out.println("Latência Cliente: " + (tDecorrido - t0) + "/ms");
 
             saida.close();
             entrada.close();

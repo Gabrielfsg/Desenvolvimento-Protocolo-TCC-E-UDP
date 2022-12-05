@@ -41,7 +41,7 @@ public class LatenciaServidorSessao implements Runnable{
             if (verificaSePodeEnviar.equals("REC")) {
                 tDecorrido = System.currentTimeMillis();
             }
-            System.out.println("Latência Servidor: " + (tDecorrido  -t0) + "ms");
+            System.out.println("Latência Servidor: " + (tDecorrido  -t0) + "/ms");
 
             saida.close();
             entrada.close();

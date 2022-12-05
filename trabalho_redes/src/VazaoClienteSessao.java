@@ -29,6 +29,8 @@ public class VazaoClienteSessao implements Runnable {
         DataInputStream entradaControle;
         DataOutputStream saidaDados;
         DataInputStream entradaDados;
+        Util util = new Util();
+        CalculoCliente calculoCliente = new CalculoCliente();
 
         try {
 
@@ -38,7 +40,7 @@ public class VazaoClienteSessao implements Runnable {
             entradaDados = new DataInputStream(dados.getInputStream());
             dados.setSoTimeout(11 * 1000);
 
-            int tamanhoBufeer = 100;
+            int tamanhoBufeer = 10000;
             byte[] buffer = new byte[tamanhoBufeer];
             long bytesEnviados = 0;
             long tDecorrido = 0;
@@ -47,7 +49,7 @@ public class VazaoClienteSessao implements Runnable {
             long tIEnvio;
             long tFEnvio;
             float avg_rtt = 0;
-            float vazao = 0;
+            float vazaoD = 0,vazaoU = 0;
 
             long tInicial = System.currentTimeMillis();
             try {
@@ -63,9 +65,9 @@ public class VazaoClienteSessao implements Runnable {
                     tDecorrido = System.currentTimeMillis() - tInicial;
                 } while (tDecorrido < 10000);
                 saidaDados.flush();
-                vazao = (bytesEnviados * 8) / (tDecorrido / 1000.0F);
-                System.out.println("Vazão (UPLOAD) Cliente: " + vazao + " bit/s");
-                System.out.println("Razão do Tempo de Transferência" + avg_rtt + "/ms");
+                vazaoU = util.bytesConvert(bytesEnviados) / (tDecorrido / 1000.0F);
+                System.out.println("Vazão (UPLOAD) Cliente: " + vazaoU + " mb/s");
+                System.out.println("Latência na Vazão " + avg_rtt + "/ms");
             } catch (Exception e) {
                 System.err.println("ERRO: " + e.toString());
             }
@@ -81,8 +83,9 @@ public class VazaoClienteSessao implements Runnable {
                         bytesRecebidos += entradaDados.read(buffer);
                         tDecorrido2 = System.currentTimeMillis() - tInicial2;
                     } while (tDecorrido2 < 10000);
-                    vazao = (bytesRecebidos * 8) / (tDecorrido / 1000.0F);
-                    System.out.println("Vazão (Download) Cliente: " + vazao + " bit/s");
+                    vazaoD = util.bytesConvert(bytesRecebidos) / (tDecorrido / 1000.0F);
+                    System.out.println("Vazão (Download) Cliente: " + vazaoD + " mb/s");
+                    Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\vazaoCliente.txt", Float.toString(vazaoU), Float.toString(vazaoD));
                 } catch (SocketTimeoutException socketTimeoutException) {
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
@@ -91,6 +94,7 @@ public class VazaoClienteSessao implements Runnable {
 
             String verificaSePodeFinalizar = entradaControle.readUTF();
             if (verificaSePodeFinalizar.equals("CF")) {
+                calculoCliente.razaoTempoTransferencia();
                 saidaControle.close();
                 entradaControle.close();
                 saidaDados.close();

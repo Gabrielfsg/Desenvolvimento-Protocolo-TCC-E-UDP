@@ -24,6 +24,7 @@ public class VazaoServidorSessao implements Runnable {
         DataInputStream entradaControle;
         DataOutputStream saidaDados;
         DataInputStream entradaDados;
+        Util util = new Util();
 
         try {
 
@@ -33,7 +34,8 @@ public class VazaoServidorSessao implements Runnable {
             entradaDados = new DataInputStream(dados.getInputStream());
             dados.setSoTimeout(11 * 1000);
 
-            byte[] buffer = new byte[100];
+            int tamanhoBufeer = 10000;
+            byte[] buffer = new byte[tamanhoBufeer];
             long bytesRecebidos = 0;
             long tDecorrido = 0;
             long tDecorrido2 = 0;
@@ -41,8 +43,8 @@ public class VazaoServidorSessao implements Runnable {
             long tFEnvio;
             float avg_rtt = 0;
             long bytesEnviados = 0;
-            int tamanhoBufeer = 100;
-
+            float vazaoD = 0, vazaoU = 0;
+            CalculoServidor calculoServidor = new CalculoServidor();
             long tInicial = System.currentTimeMillis();
             try {
                 do {
@@ -54,8 +56,8 @@ public class VazaoServidorSessao implements Runnable {
                 System.err.println("ERRO: " + e.toString());
             }
 
-            float vazao = (bytesRecebidos * 8) / (tDecorrido / 1000.0F);
-            System.out.println("Vazão (Download) Servidor: " + vazao + " bit/s");
+            vazaoD = util.bytesConvert(bytesRecebidos) / (tDecorrido / 1000.0F);
+            System.out.println("Vazão (Download) Servidor: " + vazaoD + " mb/s");
 
             saidaControle.writeUTF("OKR");
             saidaControle.flush();
@@ -76,16 +78,17 @@ public class VazaoServidorSessao implements Runnable {
                         tDecorrido2 = System.currentTimeMillis() - tInicial2;
                     } while (tDecorrido2 < 10000);
                     saidaDados.flush();
-                    vazao = (bytesEnviados * 8) / (tDecorrido2 / 1000.0F);
-                    System.out.println("Vazão (UPLOAD) Servidor: " + vazao + " bit/s");
-                    System.out.println("Razão do Tempo de Transferência" + avg_rtt + "/ms");
+                    vazaoU = util.bytesConvert(bytesEnviados) / (tDecorrido2 / 1000.0F);
+                    System.out.println("Vazão (UPLOAD) Servidor: " + vazaoU + " mb/s");
+                    System.out.println("Latência na Vazão " + avg_rtt + "/ms");
+                    Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\vazaoServidor.txt", Float.toString(vazaoU), Float.toString(vazaoD));
                     saidaControle.writeUTF("CF");
                     saidaControle.flush();
+                    calculoServidor.razaoTempoTransferencia();
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }
             }
-
             saidaControle.close();
             entradaControle.close();
             saidaDados.close();
@@ -97,7 +100,6 @@ public class VazaoServidorSessao implements Runnable {
             System.err.println("ERRO: " + e.toString());
         }
     }
-
 }
 
 
