@@ -23,9 +23,10 @@ public class ClienteUDP {
             System.out.println("Endereço do cliente: \t" + endCliente);
             System.out.println("Porto do cliente: \t" + portoCliente);
             Util util = new Util();
-            InetAddress endServidor = InetAddress.getByName(endCliente);
-            int portoServidor = Integer.parseInt("8587");
-            int portoServidorTCP = Integer.parseInt("8586");
+            InetAddress endServidor = InetAddress.getByName("DESKTOP-HO7UDGJ");
+            int portoServidor = Integer.parseInt("9087");
+            int portoServidorTCP = Integer.parseInt("9086");
+            Socket controle = new Socket(endServidor, portoServidorTCP);
             CalculoCliente calculoCliente = new CalculoCliente();
             byte[] bytesEntrada = new byte[10000];
             byte[] bytesSaida = new byte[10000];
@@ -34,7 +35,6 @@ public class ClienteUDP {
             long bytesEnviados = 0;
             long bytesLidos = 0;
             float vazaoD = 0,vazaoU = 0;
-            Socket controle = new Socket(endServidor, portoServidorTCP);
             DataOutputStream saidaControle = new DataOutputStream(controle.getOutputStream());
             DataInputStream entradaControle = new DataInputStream(controle.getInputStream());
 
@@ -81,6 +81,7 @@ public class ClienteUDP {
                     vazaoD = util.bytesConvert(bytesLidos) / (tDecorrido2 / 1000.0F);
                     System.out.println("Vazão (DOWNLOAD) Cliente: " + vazaoD + " mb/s");
                     Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraCliente.txt", Float.toString(vazaoU), Float.toString(vazaoD));
+                    Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraClienteTempo.txt", Long.toString(tDecorrido2), Long.toString(tDecorrido));
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }
@@ -89,6 +90,7 @@ public class ClienteUDP {
             String verificaSePodeFinalizar = entradaControle.readUTF();
             if (verificaSePodeFinalizar.equals("CF")) {
                 saidaControle.writeUTF("CF2");
+                calculoCliente.vazaoMaxima();
                 calculoCliente.razaoTempoTransferencia();
                 saidaControle.flush();
                 saidaControle.close();

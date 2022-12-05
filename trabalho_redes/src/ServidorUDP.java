@@ -7,12 +7,16 @@ import java.nio.ByteBuffer;
 public class ServidorUDP {
     public static void main(String[] args) {
         try {
-            DatagramSocket socket = new DatagramSocket(8587);
+            DatagramSocket socket = new DatagramSocket(9087);
             System.out.printf("Server Start \n");
             String endServidor = InetAddress.getLocalHost().getHostName();
             int portoServidor = socket.getLocalPort();
             System.out.println("Endereço do servidor: \t" + endServidor);
             System.out.println("Ouvindo no porto: \t" + portoServidor);
+            ServerSocket serverSocket = new ServerSocket(9086);
+            Socket controle;
+            controle = serverSocket.accept();
+            Util util = new Util();
             CalculoServidor calculoServidor = new CalculoServidor();
             int tamanhoBuffer = 10000;
             byte[] bytesEntrada = new byte[tamanhoBuffer];
@@ -24,10 +28,6 @@ public class ServidorUDP {
             long bytesEnviados = 0;
             float vazaoD = 0,vazaoU = 0;
             long bytesLidos = 0;
-            ServerSocket serverSocket = new ServerSocket(8586);
-            Socket controle;
-            Util util = new Util();
-            controle = serverSocket.accept();
             DataOutputStream saidaControle = new DataOutputStream(controle.getOutputStream());
             DataInputStream entradaControle = new DataInputStream(controle.getInputStream());
 
@@ -47,6 +47,7 @@ public class ServidorUDP {
                 } while (tDecorrido < 10000);
 
                 vazaoD = util.bytesConvert(bytesLidos) / (tDecorrido / 1000.0F);
+
                 System.out.println("Vazão (DOWNLOAD) Servidor: " + vazaoD + " mb/s");
             } catch (Exception e) {
                 System.err.println("ERRO: " + e.toString());
@@ -75,6 +76,7 @@ public class ServidorUDP {
                     vazaoU = util.bytesConvert(bytesEnviados) / (tDecorrido2 / 1000.0F);
                     System.out.println("Vazão (UPLOAD) Servidor: " + vazaoU + " mb/s");
                     Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraServidor.txt", Float.toString(vazaoU), Float.toString(vazaoD));
+                    Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraServidorTempo.txt", Long.toString(tDecorrido2), Long.toString(tDecorrido));
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }
@@ -82,6 +84,7 @@ public class ServidorUDP {
                 saidaControle.flush();
                 String verificaSePodeFinalizar = entradaControle.readUTF();
                 if (verificaSePodeFinalizar.equals("CF2")) {
+                    calculoServidor.vazaoMaxima();
                     calculoServidor.razaoTempoTransferencia();
                     saidaControle.close();
                     entradaControle.close();

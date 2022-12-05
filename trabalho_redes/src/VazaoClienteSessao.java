@@ -86,6 +86,7 @@ public class VazaoClienteSessao implements Runnable {
                     vazaoD = util.bytesConvert(bytesRecebidos) / (tDecorrido / 1000.0F);
                     System.out.println("Vazão (Download) Cliente: " + vazaoD + " mb/s");
                     Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\vazaoCliente.txt", Float.toString(vazaoU), Float.toString(vazaoD));
+                    Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\vazaoClienteTempo.txt", Float.toString(tDecorrido/ 1000.0F), Float.toString(tDecorrido2/ 1000.0F));
                 } catch (SocketTimeoutException socketTimeoutException) {
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
@@ -94,6 +95,7 @@ public class VazaoClienteSessao implements Runnable {
 
             String verificaSePodeFinalizar = entradaControle.readUTF();
             if (verificaSePodeFinalizar.equals("CF")) {
+                calculoCliente.vazaoMaxima();
                 calculoCliente.razaoTempoTransferencia();
                 saidaControle.close();
                 entradaControle.close();
