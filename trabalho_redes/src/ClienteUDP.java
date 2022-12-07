@@ -12,14 +12,10 @@ import java.util.concurrent.TimeUnit;
 public class ClienteUDP {
     public static void main(String[] args) {
         try {
-
             DatagramSocket socket = new DatagramSocket();
             System.out.println("=== Cliente iniciado!");
-
-
             String endCliente = InetAddress.getLocalHost().getHostName();
             int portoCliente = socket.getLocalPort();
-
             System.out.println("Endereço do cliente: \t" + endCliente);
             System.out.println("Porto do cliente: \t" + portoCliente);
             Util util = new Util();
@@ -29,7 +25,7 @@ public class ClienteUDP {
             Socket controle = new Socket(endServidor, portoServidorTCP);
             CalculoCliente calculoCliente = new CalculoCliente();
             byte[] bytesEntrada = new byte[10000];
-            byte[] bytesSaida = new byte[10000];
+            byte[] bytesSaida = new byte[8000];
             long tDecorrido = 0;
             long tDecorrido2 = 0;
             long bytesEnviados = 0;
@@ -43,26 +39,27 @@ public class ClienteUDP {
             for (int i = 0; i < bytesSaida.length; i++) {
                 bytesSaida[i] = 0;
             }
-            try {
-                long tInicial = System.currentTimeMillis();
-                do {
-                    BigInteger bigInt = BigInteger.valueOf(10000);
-                    bytesSaida = bigInt.toByteArray();
-                    envia = new DatagramPacket(bytesSaida, bytesSaida.length, endServidor, portoServidor);
-                    socket.send(envia);
-                    tDecorrido = System.currentTimeMillis() - tInicial;
-                    bytesEnviados += 10000;
-                } while (tDecorrido < 10000);
-            } catch (Exception e) {
-                System.err.println("ERRO: " + e.toString());
-            }
-
-            vazaoU = util.bytesConvert(bytesEnviados) / (tDecorrido / 1000.0F);
-            System.out.println("Vazão (UPLOAD) Cliente: " + vazaoU + " mb/s");
 
             for (int i = 0; i < bytesEntrada.length; i++) {
                 bytesEntrada[i] = 0;
             }
+
+            try {
+                long tInicial = System.currentTimeMillis();
+                do {
+                    BigInteger bigInt = BigInteger.valueOf(8000);
+                    bytesSaida = bigInt.toByteArray();
+                    envia = new DatagramPacket(bytesSaida, bytesSaida.length, endServidor, portoServidor);
+                    socket.send(envia);
+                    tDecorrido = System.currentTimeMillis() - tInicial;
+                    bytesEnviados += 8000;
+                } while (tDecorrido < 10000);
+                vazaoU = util.bytesConvert(bytesEnviados) / (tDecorrido / 1000.0F);
+                System.out.println("Vazão (UPLOAD) Cliente: " + vazaoU + " mb/s");
+            } catch (Exception e) {
+                System.err.println("ERRO: " + e.toString());
+            }
+
             DatagramPacket recebe;
             String verificaSePodeReceber = entradaControle.readUTF();
             saidaControle.writeUTF("OKE");

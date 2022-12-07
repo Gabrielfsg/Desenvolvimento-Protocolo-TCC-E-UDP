@@ -18,8 +18,8 @@ public class ServidorUDP {
             controle = serverSocket.accept();
             Util util = new Util();
             CalculoServidor calculoServidor = new CalculoServidor();
-            int tamanhoBuffer = 10000;
-            byte[] bytesEntrada = new byte[tamanhoBuffer];
+            int tamanhoBuffer = 8000;
+            byte[] bytesEntrada = new byte[10000];
             byte[] bytesSaida = new byte[tamanhoBuffer];
             InetAddress endCliente = null;
             int portoCliente = 0;
@@ -35,25 +35,24 @@ public class ServidorUDP {
                 bytesEntrada[i] = 0;
             }
 
+            for (int i = 0; i < bytesSaida.length; i++) {
+                bytesSaida[i] = 0;
+            }
+
             try {
                 DatagramPacket recebe = new DatagramPacket(bytesEntrada, bytesEntrada.length);
                 long tInicial = System.currentTimeMillis();
                 do {
                     socket.receive(recebe);
-                    endCliente = recebe.getAddress();
-                    portoCliente = recebe.getPort();
                     tDecorrido = System.currentTimeMillis() - tInicial;
                     bytesLidos += ByteBuffer.wrap(recebe.getData()).getInt();
+                    endCliente = recebe.getAddress();
+                    portoCliente = recebe.getPort();
                 } while (tDecorrido < 10000);
-
                 vazaoD = util.bytesConvert(bytesLidos) / (tDecorrido / 1000.0F);
-
                 System.out.println("Vazão (DOWNLOAD) Servidor: " + vazaoD + " mb/s");
             } catch (Exception e) {
                 System.err.println("ERRO: " + e.toString());
-            }
-            for (int i = 0; i < bytesSaida.length; i++) {
-                bytesSaida[i] = 0;
             }
 
             saidaControle.writeUTF("OKR");
@@ -65,12 +64,12 @@ public class ServidorUDP {
                     DatagramPacket envia;
                     long tInicial2 = System.currentTimeMillis();
                     do {
-                        BigInteger bigInt = BigInteger.valueOf(10000);
+                        BigInteger bigInt = BigInteger.valueOf(8000);
                         bytesSaida = bigInt.toByteArray();
                         envia = new DatagramPacket(bytesSaida, bytesSaida.length, endCliente, portoCliente);
                         socket.send(envia);
                         tDecorrido2 = System.currentTimeMillis() - tInicial2;
-                        bytesEnviados += 10000;
+                        bytesEnviados += 8000;
                     } while (tDecorrido2 < 10000);
 
                     vazaoU = util.bytesConvert(bytesEnviados) / (tDecorrido2 / 1000.0F);
