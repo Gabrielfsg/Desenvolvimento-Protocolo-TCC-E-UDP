@@ -33,8 +33,8 @@ public class CalculoServidor implements CalculosUteis{
             float vazaoD = Float.parseFloat(vazoes.get(1));
             float larguraU = Float.parseFloat(larguras.get(0));
             float larguraD = Float.parseFloat(larguras.get(1));
-            System.out.println("Razao Tempo Transferencia (Upload - Servidor): " + (vazaoU/larguraU) + "/s");
-            System.out.println("Razao Tempo Transferencia (Download - Servidor): " + (vazaoD/larguraD) + "/s");
+            System.out.println("Razao Tempo Transferencia (Upload - Servidor): " + (vazaoU/larguraU) + " s");
+            System.out.println("Razao Tempo Transferencia (Download - Servidor): " + (vazaoD/larguraD) + " s");
         }
     }
 }
