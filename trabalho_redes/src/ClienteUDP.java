@@ -44,6 +44,8 @@ public class ClienteUDP {
                 bytesEntrada[i] = 0;
             }
 
+            socket.setSoTimeout(11 * 1000);
+
             try {
                 long tInicial = System.currentTimeMillis();
                 do {

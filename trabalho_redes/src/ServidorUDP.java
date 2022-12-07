@@ -39,6 +39,8 @@ public class ServidorUDP {
                 bytesSaida[i] = 0;
             }
 
+            socket.setSoTimeout(11 * 1000);
+
             try {
                 DatagramPacket recebe = new DatagramPacket(bytesEntrada, bytesEntrada.length);
                 long tInicial = System.currentTimeMillis();
