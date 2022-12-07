@@ -16,8 +16,8 @@ public class CalculoCliente implements CalculosUteis {
             float vazaoD = Float.parseFloat(vazoes.get(1));
             float larguraU = Float.parseFloat(larguras.get(0));
             float larguraD = Float.parseFloat(larguras.get(1));
-            System.out.println("Vazão máxima (Upload - Cliente): " + (vazaoU/larguraU) + "mb/s");
-            System.out.println("Vazão máxima (Download - Cliente): " + (vazaoD/larguraD) + "mb/s");
+            System.out.println("Vazão máxima (Upload - Cliente): " + (vazaoU/larguraU) + " mb/s");
+            System.out.println("Vazão máxima (Download - Cliente): " + (vazaoD/larguraD) + " mb/s");
         }
     }
 
