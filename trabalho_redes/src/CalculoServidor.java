@@ -4,8 +4,8 @@ import java.util.ArrayList;
 public class CalculoServidor implements CalculosUteis{
     @Override
     public void vazaoMaxima() throws IOException {
-        ArrayList<String> larguras = Arquivo.lerArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraCliente.txt");
-        ArrayList<String> vazoes = Arquivo.lerArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\vazaoCliente.txt");
+        ArrayList<String> larguras = Arquivo.lerArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraServidor.txt");
+        ArrayList<String> vazoes = Arquivo.lerArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\vazaoServidor.txt");
         if(vazoes.size() == 2 && larguras.size() < 2){
             System.out.println("A largura deve ser calculada para ser mostrada a: (Vazão máxima)");
         } else if (vazoes.size() < 2 && larguras.size() == 2) {
@@ -22,8 +22,8 @@ public class CalculoServidor implements CalculosUteis{
 
     @Override
     public void razaoTempoTransferencia() throws IOException {
-        ArrayList<String> larguras = Arquivo.lerArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraClienteTempo.txt");
-        ArrayList<String> vazoes = Arquivo.lerArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\vazaoClienteTempo.txt");
+        ArrayList<String> larguras = Arquivo.lerArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraServidorTempo.txt");
+        ArrayList<String> vazoes = Arquivo.lerArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\vazaoServidorTempo.txt");
         if(vazoes.size() == 2 && larguras.size() < 2){
             System.out.println("A largura deve ser calculada para ser mostrada a: (Razão do Tempo de Transferência)");
         } else if (vazoes.size() < 2 && larguras.size() == 2) {
