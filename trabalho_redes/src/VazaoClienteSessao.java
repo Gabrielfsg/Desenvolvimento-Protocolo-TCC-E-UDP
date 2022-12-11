@@ -14,7 +14,8 @@ public class VazaoClienteSessao implements Runnable {
 
     private Socket dados;
 
-    public VazaoClienteSessao(String idCliente, String serverIP, int serverPort) throws IOException {
+    public
+    VazaoClienteSessao(String idCliente, String serverIP, int serverPort) throws IOException {
         this.idCliente = idCliente;
         this.serverIP = serverIP;
         this.serverPort = serverPort;
