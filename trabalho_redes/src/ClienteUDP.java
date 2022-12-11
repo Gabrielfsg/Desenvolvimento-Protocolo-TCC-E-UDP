@@ -2,10 +2,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.math.BigInteger;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.Socket;
+import java.net.*;
 import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
 
@@ -58,6 +55,7 @@ public class ClienteUDP {
                 } while (tDecorrido < 10000);
                 vazaoU = util.bytesConvert(bytesEnviados) / (tDecorrido / 1000.0F);
                 System.out.println("Vazão (UPLOAD) Cliente: " + vazaoU + " mb/s");
+            } catch (SocketTimeoutException socketTimeoutException) {
             } catch (Exception e) {
                 System.err.println("ERRO: " + e.toString());
             }
@@ -81,6 +79,7 @@ public class ClienteUDP {
                     System.out.println("Vazão (DOWNLOAD) Cliente: " + vazaoD + " mb/s");
                     Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraCliente.txt", Float.toString(vazaoU), Float.toString(vazaoD));
                     Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraClienteTempo.txt", Long.toString(tDecorrido2), Long.toString(tDecorrido));
+                } catch (SocketTimeoutException socketTimeoutException) {
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }
