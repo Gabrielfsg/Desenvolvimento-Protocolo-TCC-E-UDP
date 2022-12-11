@@ -53,6 +53,7 @@ public class ServidorUDP {
                 } while (tDecorrido < 10000);
                 vazaoD = util.bytesConvert(bytesLidos) / (tDecorrido / 1000.0F);
                 System.out.println("Vazão (DOWNLOAD) Servidor: " + vazaoD + " mb/s");
+            } catch (SocketTimeoutException socketTimeoutException) {
             } catch (Exception e) {
                 System.err.println("ERRO: " + e.toString());
             }
@@ -78,6 +79,7 @@ public class ServidorUDP {
                     System.out.println("Vazão (UPLOAD) Servidor: " + vazaoU + " mb/s");
                     Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraServidor.txt", Float.toString(vazaoU), Float.toString(vazaoD));
                     Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraServidorTempo.txt", Long.toString(tDecorrido2), Long.toString(tDecorrido));
+                } catch (SocketTimeoutException socketTimeoutException) {
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }

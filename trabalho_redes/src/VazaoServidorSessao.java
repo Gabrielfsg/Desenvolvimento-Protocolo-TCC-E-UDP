@@ -34,7 +34,7 @@ public class VazaoServidorSessao implements Runnable {
             entradaDados = new DataInputStream(dados.getInputStream());
             dados.setSoTimeout(11 * 1000);
 
-            int tamanhoBufeer = 128000;
+            int tamanhoBufeer = 1500;
             byte[] buffer = new byte[tamanhoBufeer];
             long bytesRecebidos = 0;
             long tDecorrido = 0;
