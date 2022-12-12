@@ -1,6 +1,4 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
@@ -35,10 +33,10 @@ public class VazaoClienteSessao implements Runnable {
 
         try {
 
-            saidaControle = new DataOutputStream(controle.getOutputStream());
-            entradaControle = new DataInputStream(controle.getInputStream());
-            saidaDados = new DataOutputStream(dados.getOutputStream());
-            entradaDados = new DataInputStream(dados.getInputStream());
+            saidaControle = new DataOutputStream(new BufferedOutputStream(controle.getOutputStream()));
+            entradaControle = new DataInputStream(new BufferedInputStream(controle.getInputStream()));
+            saidaDados = new DataOutputStream(new BufferedOutputStream(dados.getOutputStream()));
+            entradaDados = new DataInputStream(new BufferedInputStream(dados.getInputStream()));
             dados.setSoTimeout(11 * 1000);
 
             int tamanhoBufeer = 1500;
@@ -86,8 +84,8 @@ public class VazaoClienteSessao implements Runnable {
                     } while (tDecorrido2 < 10000);
                     vazaoD = util.bytesConvert(bytesRecebidos) / (tDecorrido / 1000.0F);
                     System.out.println("Vazão (Download) Cliente: " + vazaoD + " mb/s");
-                    Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\vazaoCliente.txt", Float.toString(vazaoU), Float.toString(vazaoD));
-                    Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\vazaoClienteTempo.txt", Float.toString(tDecorrido/ 1000.0F), Float.toString(tDecorrido2/ 1000.0F));
+                    Arquivo.escreveArq("/home/alunos/Música/trab_redes/trabalho_redes/src/vazaoCliente.txt", Float.toString(vazaoU), Float.toString(vazaoD));
+                    Arquivo.escreveArq("/home/alunos/Música/trab_redes/trabalho_redes/src/vazaoClienteTempo.txt", Float.toString(tDecorrido/ 1000.0F), Float.toString(tDecorrido2/ 1000.0F));
                 } catch (SocketTimeoutException socketTimeoutException) {
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());

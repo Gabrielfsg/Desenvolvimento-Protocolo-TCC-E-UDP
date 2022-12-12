@@ -1,6 +1,4 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
+import java.io.*;
 import java.math.BigInteger;
 import java.net.*;
 import java.nio.ByteBuffer;
@@ -16,20 +14,20 @@ public class ClienteUDP {
             System.out.println("Endereço do cliente: \t" + endCliente);
             System.out.println("Porto do cliente: \t" + portoCliente);
             Util util = new Util();
-            InetAddress endServidor = InetAddress.getByName("DESKTOP-HO7UDGJ");
+            InetAddress endServidor = InetAddress.getByName("lar-linc-pc19.local");
             int portoServidor = Integer.parseInt("9087");
             int portoServidorTCP = Integer.parseInt("9086");
             Socket controle = new Socket(endServidor, portoServidorTCP);
             CalculoCliente calculoCliente = new CalculoCliente();
-            byte[] bytesEntrada = new byte[10000];
-            byte[] bytesSaida = new byte[8000];
+            byte[] bytesEntrada = new byte[1440];
+            byte[] bytesSaida = new byte[1440];
             long tDecorrido = 0;
             long tDecorrido2 = 0;
             long bytesEnviados = 0;
             long bytesLidos = 0;
             float vazaoD = 0,vazaoU = 0;
-            DataOutputStream saidaControle = new DataOutputStream(controle.getOutputStream());
-            DataInputStream entradaControle = new DataInputStream(controle.getInputStream());
+            DataOutputStream saidaControle = new DataOutputStream(new BufferedOutputStream(controle.getOutputStream()));
+            DataInputStream entradaControle = new DataInputStream(new BufferedInputStream(controle.getInputStream()));
 
             DatagramPacket envia;
 
@@ -44,14 +42,14 @@ public class ClienteUDP {
             socket.setSoTimeout(11 * 1000);
 
             try {
+                //BigInteger bigInt = BigInteger.valueOf(1440 * 10);
+                //bytesSaida = bigInt.toByteArray();
+                envia = new DatagramPacket(bytesSaida, bytesSaida.length, endServidor, portoServidor);
                 long tInicial = System.currentTimeMillis();
                 do {
-                    BigInteger bigInt = BigInteger.valueOf(8000);
-                    bytesSaida = bigInt.toByteArray();
-                    envia = new DatagramPacket(bytesSaida, bytesSaida.length, endServidor, portoServidor);
                     socket.send(envia);
                     tDecorrido = System.currentTimeMillis() - tInicial;
-                    bytesEnviados += 8000;
+                    bytesEnviados += envia.getLength();
                 } while (tDecorrido < 10000);
                 vazaoU = util.bytesConvert(bytesEnviados) / (tDecorrido / 1000.0F);
                 System.out.println("Vazão (UPLOAD) Cliente: " + vazaoU + " mb/s");
@@ -72,13 +70,13 @@ public class ClienteUDP {
                     do {
                         socket.receive(recebe);
                         tDecorrido2 = System.currentTimeMillis() - tInicial2;
-                        bytesLidos += ByteBuffer.wrap(recebe.getData()).getInt();
+                        bytesLidos += recebe.getLength();
                     } while (tDecorrido2 < 10000);
 
                     vazaoD = util.bytesConvert(bytesLidos) / (tDecorrido2 / 1000.0F);
                     System.out.println("Vazão (DOWNLOAD) Cliente: " + vazaoD + " mb/s");
-                    Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraCliente.txt", Float.toString(vazaoU), Float.toString(vazaoD));
-                    Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraClienteTempo.txt", Long.toString(tDecorrido2), Long.toString(tDecorrido));
+                    Arquivo.escreveArq("/home/alunos/Música/trab_redes/trabalho_redes/src/larguraCliente.txt", Float.toString(vazaoU), Float.toString(vazaoD));
+                    Arquivo.escreveArq("/home/alunos/Música/trab_redes/trabalho_redes/src/larguraClienteTempo.txt", Long.toString(tDecorrido2), Long.toString(tDecorrido));
                 } catch (SocketTimeoutException socketTimeoutException) {
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());

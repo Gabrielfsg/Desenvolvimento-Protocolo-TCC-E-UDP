@@ -1,3 +1,5 @@
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.math.BigInteger;
@@ -28,8 +30,8 @@ public class ServidorUDP {
             long bytesEnviados = 0;
             float vazaoD = 0,vazaoU = 0;
             long bytesLidos = 0;
-            DataOutputStream saidaControle = new DataOutputStream(controle.getOutputStream());
-            DataInputStream entradaControle = new DataInputStream(controle.getInputStream());
+            DataOutputStream saidaControle = new DataOutputStream(new BufferedOutputStream(controle.getOutputStream()));
+            DataInputStream entradaControle = new DataInputStream(new BufferedInputStream(controle.getInputStream()));
 
             for (int i = 0; i < bytesEntrada.length; i++) {
                 bytesEntrada[i] = 0;
@@ -77,8 +79,8 @@ public class ServidorUDP {
 
                     vazaoU = util.bytesConvert(bytesEnviados) / (tDecorrido2 / 1000.0F);
                     System.out.println("Vazão (UPLOAD) Servidor: " + vazaoU + " mb/s");
-                    Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraServidor.txt", Float.toString(vazaoU), Float.toString(vazaoD));
-                    Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\larguraServidorTempo.txt", Long.toString(tDecorrido2), Long.toString(tDecorrido));
+                    Arquivo.escreveArq("larguraServidor.txt", Float.toString(vazaoU), Float.toString(vazaoD));
+                    Arquivo.escreveArq("larguraServidorTempo.txt", Long.toString(tDecorrido2), Long.toString(tDecorrido));
                 } catch (SocketTimeoutException socketTimeoutException) {
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());

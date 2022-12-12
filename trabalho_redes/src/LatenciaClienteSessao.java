@@ -40,6 +40,7 @@ public class LatenciaClienteSessao implements Runnable{
             int byteEnviado = 1;
             long t0 = System.currentTimeMillis();
             saida.writeByte(byteEnviado);
+            saida.flush();
             entrada.readByte();
             long tDecorrido = System.currentTimeMillis();
             saidaControle.writeUTF("REC");

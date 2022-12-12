@@ -81,8 +81,8 @@ public class VazaoServidorSessao implements Runnable {
                     vazaoU = util.bytesConvert(bytesEnviados) / (tDecorrido2 / 1000.0F);
                     System.out.println("Vazão (UPLOAD) Servidor: " + vazaoU + " mb/s");
                     System.out.println("Latência na Vazão " + avg_rtt + "/ms");
-                    Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\vazaoServidor.txt", Float.toString(vazaoU), Float.toString(vazaoD));
-                    Arquivo.escreveArq("C:\\Users\\T-GAMER\\Pictures\\trab_redes\\trabalho_redes\\src\\arquivo\\vazaoServidorTempo.txt", Float.toString(tDecorrido2 / 1000.0F), Float.toString(tDecorrido/ 1000.0F));
+                    Arquivo.escreveArq("vazaoServidor.txt", Float.toString(vazaoU), Float.toString(vazaoD));
+                    Arquivo.escreveArq("vazaoServidorTempo.txt", Float.toString(tDecorrido2 / 1000.0F), Float.toString(tDecorrido/ 1000.0F));
                     saidaControle.writeUTF("CF");
                     saidaControle.flush();
                     calculoServidor.vazaoMaxima();
