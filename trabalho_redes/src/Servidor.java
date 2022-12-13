@@ -26,8 +26,8 @@ public class Servidor {
                     contador++;
 
                     System.out.println("+++ cria a sessao nº " + contador + " para atender o novo cliente (" + controle.getInetAddress() + "," + controle.getPort() + ")" );
-                    //Runnable sessao = new VazaoServidorSessao(controle, dados,"sessão[" + contador + "]");
-                    Runnable sessao = new LatenciaServidorSessao(dados, controle,"sessão[" + contador + "]");
+                    Runnable sessao = new VazaoServidorSessao(controle, dados,"sessão[" + contador + "]");
+                    //Runnable sessao = new LatenciaServidorSessao(dados, controle,"sessão[" + contador + "]");
                     Thread t = new Thread( sessao );
                     t.start();
 

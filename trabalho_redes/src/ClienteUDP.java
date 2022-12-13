@@ -14,7 +14,7 @@ public class ClienteUDP {
             System.out.println("Endereço do cliente: \t" + endCliente);
             System.out.println("Porto do cliente: \t" + portoCliente);
             Util util = new Util();
-            InetAddress endServidor = InetAddress.getByName("DESKTOP-HO7UDGJ");
+            InetAddress endServidor = InetAddress.getByName(endCliente);
             int portoServidor = Integer.parseInt("9087");
             int portoServidorTCP = Integer.parseInt("9086");
             Socket controle = new Socket(endServidor, portoServidorTCP);
