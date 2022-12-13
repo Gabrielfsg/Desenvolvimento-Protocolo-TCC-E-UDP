@@ -37,6 +37,7 @@ public class LatenciaServidorSessao implements Runnable{
             long t0 = System.currentTimeMillis();
             entrada.readByte();
             saida.writeByte(byteEnviado);
+            saida.flush();
             String verificaSePodeEnviar = entradaControle.readUTF();
             if (verificaSePodeEnviar.equals("REC")) {
                 tDecorrido = System.currentTimeMillis();

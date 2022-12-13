@@ -20,8 +20,8 @@ public class ServidorUDP {
             controle = serverSocket.accept();
             Util util = new Util();
             CalculoServidor calculoServidor = new CalculoServidor();
-            int tamanhoBuffer = 8000;
-            byte[] bytesEntrada = new byte[10000];
+            int tamanhoBuffer = 1440;
+            byte[] bytesEntrada = new byte[tamanhoBuffer];
             byte[] bytesSaida = new byte[tamanhoBuffer];
             InetAddress endCliente = null;
             int portoCliente = 0;
@@ -41,7 +41,7 @@ public class ServidorUDP {
                 bytesSaida[i] = 0;
             }
 
-            socket.setSoTimeout(11 * 1000);
+            socket.setSoTimeout(11 * 4000);
 
             try {
                 DatagramPacket recebe = new DatagramPacket(bytesEntrada, bytesEntrada.length);
@@ -49,13 +49,14 @@ public class ServidorUDP {
                 do {
                     socket.receive(recebe);
                     tDecorrido = System.currentTimeMillis() - tInicial;
-                    bytesLidos += ByteBuffer.wrap(recebe.getData()).getInt();
+                    bytesLidos += recebe.getLength();
                     endCliente = recebe.getAddress();
                     portoCliente = recebe.getPort();
                 } while (tDecorrido < 10000);
                 vazaoD = util.bytesConvert(bytesLidos) / (tDecorrido / 1000.0F);
                 System.out.println("Vazão (DOWNLOAD) Servidor: " + vazaoD + " mb/s");
             } catch (SocketTimeoutException socketTimeoutException) {
+                System.out.println("TimeOut Servidor.");
             } catch (Exception e) {
                 System.err.println("ERRO: " + e.toString());
             }
@@ -67,21 +68,20 @@ public class ServidorUDP {
                 System.out.println("Começou a enviar");
                 try {
                     DatagramPacket envia;
+                    envia = new DatagramPacket(bytesSaida, bytesSaida.length, endCliente, portoCliente);
                     long tInicial2 = System.currentTimeMillis();
                     do {
-                        BigInteger bigInt = BigInteger.valueOf(8000);
-                        bytesSaida = bigInt.toByteArray();
-                        envia = new DatagramPacket(bytesSaida, bytesSaida.length, endCliente, portoCliente);
                         socket.send(envia);
                         tDecorrido2 = System.currentTimeMillis() - tInicial2;
-                        bytesEnviados += 8000;
+                        bytesEnviados += envia.getLength();
                     } while (tDecorrido2 < 10000);
 
                     vazaoU = util.bytesConvert(bytesEnviados) / (tDecorrido2 / 1000.0F);
                     System.out.println("Vazão (UPLOAD) Servidor: " + vazaoU + " mb/s");
-                    Arquivo.escreveArq("larguraServidor.txt", Float.toString(vazaoU), Float.toString(vazaoD));
-                    Arquivo.escreveArq("larguraServidorTempo.txt", Long.toString(tDecorrido2), Long.toString(tDecorrido));
+                    Arquivo.escreveArq("src/larguraServidor.txt", Float.toString(vazaoU), Float.toString(vazaoD));
+                    Arquivo.escreveArq("src/larguraServidorTempo.txt", Long.toString(tDecorrido2), Long.toString(tDecorrido));
                 } catch (SocketTimeoutException socketTimeoutException) {
+                    System.out.println("TimeOut Servidor.");
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }

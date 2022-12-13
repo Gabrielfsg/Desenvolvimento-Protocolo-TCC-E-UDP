@@ -14,13 +14,14 @@ public class ClienteUDP {
             System.out.println("Endereço do cliente: \t" + endCliente);
             System.out.println("Porto do cliente: \t" + portoCliente);
             Util util = new Util();
-            InetAddress endServidor = InetAddress.getByName("lar-linc-pc19.local");
+            InetAddress endServidor = InetAddress.getByName("DESKTOP-HO7UDGJ");
             int portoServidor = Integer.parseInt("9087");
             int portoServidorTCP = Integer.parseInt("9086");
             Socket controle = new Socket(endServidor, portoServidorTCP);
             CalculoCliente calculoCliente = new CalculoCliente();
-            byte[] bytesEntrada = new byte[1440];
-            byte[] bytesSaida = new byte[1440];
+            int tamanhoBuffer = 1440;
+            byte[] bytesEntrada = new byte[tamanhoBuffer];
+            byte[] bytesSaida = new byte[tamanhoBuffer];
             long tDecorrido = 0;
             long tDecorrido2 = 0;
             long bytesEnviados = 0;
@@ -39,11 +40,9 @@ public class ClienteUDP {
                 bytesEntrada[i] = 0;
             }
 
-            socket.setSoTimeout(11 * 1000);
+            socket.setSoTimeout(11 * 4000);
 
             try {
-                //BigInteger bigInt = BigInteger.valueOf(1440 * 10);
-                //bytesSaida = bigInt.toByteArray();
                 envia = new DatagramPacket(bytesSaida, bytesSaida.length, endServidor, portoServidor);
                 long tInicial = System.currentTimeMillis();
                 do {
@@ -54,6 +53,7 @@ public class ClienteUDP {
                 vazaoU = util.bytesConvert(bytesEnviados) / (tDecorrido / 1000.0F);
                 System.out.println("Vazão (UPLOAD) Cliente: " + vazaoU + " mb/s");
             } catch (SocketTimeoutException socketTimeoutException) {
+                System.out.println("TimeOut Cliente.");
             } catch (Exception e) {
                 System.err.println("ERRO: " + e.toString());
             }
@@ -65,7 +65,7 @@ public class ClienteUDP {
             if (verificaSePodeReceber.equals("OKR")) {
                 System.out.println("Começou a receber");
                 try {
-                     recebe = new DatagramPacket(bytesEntrada, bytesEntrada.length);
+                    recebe = new DatagramPacket(bytesEntrada, bytesEntrada.length);
                     long tInicial2 = System.currentTimeMillis();
                     do {
                         socket.receive(recebe);
@@ -75,9 +75,10 @@ public class ClienteUDP {
 
                     vazaoD = util.bytesConvert(bytesLidos) / (tDecorrido2 / 1000.0F);
                     System.out.println("Vazão (DOWNLOAD) Cliente: " + vazaoD + " mb/s");
-                    Arquivo.escreveArq("/home/alunos/Música/trab_redes/trabalho_redes/src/larguraCliente.txt", Float.toString(vazaoU), Float.toString(vazaoD));
-                    Arquivo.escreveArq("/home/alunos/Música/trab_redes/trabalho_redes/src/larguraClienteTempo.txt", Long.toString(tDecorrido2), Long.toString(tDecorrido));
+                    Arquivo.escreveArq("src/larguraCliente.txt", Float.toString(vazaoU), Float.toString(vazaoD));
+                    Arquivo.escreveArq("src/larguraClienteTempo.txt", Long.toString(tDecorrido2), Long.toString(tDecorrido));
                 } catch (SocketTimeoutException socketTimeoutException) {
+                    System.out.println("TimeOut Cliente.");
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }

@@ -9,7 +9,8 @@ import java.util.Arrays;
 public class Arquivo {
 
     public static void escreveArq(String caminho, String upload, String download) throws IOException{
-        File file = new File(caminho);
+        Path path = Paths.get(caminho);
+        File file = new File(path.toAbsolutePath().toString());
         FileWriter fw = null;
         if ( file.exists()) {
             file.delete();

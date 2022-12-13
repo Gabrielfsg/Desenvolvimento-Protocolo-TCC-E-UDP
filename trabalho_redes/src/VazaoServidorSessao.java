@@ -1,3 +1,5 @@
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
@@ -28,10 +30,10 @@ public class VazaoServidorSessao implements Runnable {
 
         try {
 
-            saidaControle = new DataOutputStream(controle.getOutputStream());
-            entradaControle = new DataInputStream(controle.getInputStream());
-            saidaDados = new DataOutputStream(dados.getOutputStream());
-            entradaDados = new DataInputStream(dados.getInputStream());
+            saidaControle = new DataOutputStream(new BufferedOutputStream(controle.getOutputStream()));
+            entradaControle = new DataInputStream(new BufferedInputStream(controle.getInputStream()));
+            saidaDados = new DataOutputStream(new BufferedOutputStream(dados.getOutputStream()));
+            entradaDados = new DataInputStream(new BufferedInputStream(dados.getInputStream()));
             dados.setSoTimeout(11 * 1000);
 
             int tamanhoBufeer = 1500;
@@ -52,6 +54,7 @@ public class VazaoServidorSessao implements Runnable {
                     tDecorrido = System.currentTimeMillis() - tInicial;
                 } while (tDecorrido < 10000);
             } catch (SocketTimeoutException socketTimeoutException) {
+                System.out.println("TimeOut Servidor.");
             } catch (Exception e) {
                 System.err.println("ERRO: " + e.toString());
             }
@@ -81,12 +84,14 @@ public class VazaoServidorSessao implements Runnable {
                     vazaoU = util.bytesConvert(bytesEnviados) / (tDecorrido2 / 1000.0F);
                     System.out.println("Vazão (UPLOAD) Servidor: " + vazaoU + " mb/s");
                     System.out.println("Latência na Vazão " + avg_rtt + "/ms");
-                    Arquivo.escreveArq("vazaoServidor.txt", Float.toString(vazaoU), Float.toString(vazaoD));
-                    Arquivo.escreveArq("vazaoServidorTempo.txt", Float.toString(tDecorrido2 / 1000.0F), Float.toString(tDecorrido/ 1000.0F));
+                    Arquivo.escreveArq("src/vazaoServidor.txt", Float.toString(vazaoU), Float.toString(vazaoD));
+                    Arquivo.escreveArq("src/vazaoServidorTempo.txt", Float.toString(tDecorrido2 / 1000.0F), Float.toString(tDecorrido/ 1000.0F));
                     saidaControle.writeUTF("CF");
                     saidaControle.flush();
                     calculoServidor.vazaoMaxima();
                     calculoServidor.razaoTempoTransferencia();
+                } catch (SocketTimeoutException socketTimeoutException) {
+                    System.out.println("TimeOut Cliente.");
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }

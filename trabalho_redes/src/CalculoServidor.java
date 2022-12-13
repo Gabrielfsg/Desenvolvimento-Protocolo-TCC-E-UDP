@@ -4,8 +4,8 @@ import java.util.ArrayList;
 public class CalculoServidor implements CalculosUteis{
     @Override
     public void vazaoMaxima() throws IOException {
-        ArrayList<String> larguras = Arquivo.lerArq("/tmp/larguraServidor.txt");
-        ArrayList<String> vazoes = Arquivo.lerArq("/tmp/vazaoServidor.txt");
+        ArrayList<String> larguras = Arquivo.lerArq("src/larguraServidor.txt");
+        ArrayList<String> vazoes = Arquivo.lerArq("src/vazaoServidor.txt");
         if(vazoes.size() == 2 && larguras.size() < 2){
             System.out.println("A largura deve ser calculada para ser mostrada a: (Vazão máxima)");
         } else if (vazoes.size() < 2 && larguras.size() == 2) {
@@ -15,15 +15,15 @@ public class CalculoServidor implements CalculosUteis{
             float vazaoD = Float.parseFloat(vazoes.get(1));
             float larguraU = Float.parseFloat(larguras.get(0));
             float larguraD = Float.parseFloat(larguras.get(1));
-            System.out.println("Vazão máxima (Upload - Servidor): " + (vazaoU / larguraU) + " mb/s");
-            System.out.println("Vazão máxima (Download - Servidor): " + (vazaoD / larguraD) + " mb/s");
+            System.out.println("Vazão máxima (Upload - Servidor): " + ((larguraU/vazaoU)*100) + " %");
+            System.out.println("Vazão máxima (Download - Servidor): " + ((larguraD/vazaoD)*100) + " %");
         }
     }
 
     @Override
     public void razaoTempoTransferencia() throws IOException {
-        ArrayList<String> larguras = Arquivo.lerArq("/tmp/larguraServidorTempo.txt");
-        ArrayList<String> vazoes = Arquivo.lerArq("/tmp/vazaoServidorTempo.txt");
+        ArrayList<String> larguras = Arquivo.lerArq("src/larguraServidorTempo.txt");
+        ArrayList<String> vazoes = Arquivo.lerArq("src/vazaoServidorTempo.txt");
         if(vazoes.size() == 2 && larguras.size() < 2){
             System.out.println("A largura deve ser calculada para ser mostrada a: (Razão do Tempo de Transferência)");
         } else if (vazoes.size() < 2 && larguras.size() == 2) {
@@ -33,8 +33,8 @@ public class CalculoServidor implements CalculosUteis{
             float vazaoD = Float.parseFloat(vazoes.get(1));
             float larguraU = Float.parseFloat(larguras.get(0));
             float larguraD = Float.parseFloat(larguras.get(1));
-            System.out.println("Razao Tempo Transferencia (Upload - Servidor): " + (vazaoU/larguraU) + " s");
-            System.out.println("Razao Tempo Transferencia (Download - Servidor): " + (vazaoD/larguraD) + " s");
+            System.out.println("Razao Tempo Transferencia (Upload - Servidor): " + ((larguraU/vazaoU)*100) + " %");
+            System.out.println("Razao Tempo Transferencia (Download - Servidor): " + ((larguraD/vazaoD)*100) + " %");
         }
     }
 }

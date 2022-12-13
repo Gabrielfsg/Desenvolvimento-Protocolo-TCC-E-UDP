@@ -67,6 +67,8 @@ public class VazaoClienteSessao implements Runnable {
                 vazaoU = util.bytesConvert(bytesEnviados) / (tDecorrido / 1000.0F);
                 System.out.println("Vazão (UPLOAD) Cliente: " + vazaoU + " mb/s");
                 System.out.println("Latência na Vazão " + avg_rtt + "/ms");
+            } catch (SocketTimeoutException socketTimeoutException) {
+                System.out.println("TimeOut Cliente.");
             } catch (Exception e) {
                 System.err.println("ERRO: " + e.toString());
             }
@@ -84,9 +86,10 @@ public class VazaoClienteSessao implements Runnable {
                     } while (tDecorrido2 < 10000);
                     vazaoD = util.bytesConvert(bytesRecebidos) / (tDecorrido / 1000.0F);
                     System.out.println("Vazão (Download) Cliente: " + vazaoD + " mb/s");
-                    Arquivo.escreveArq("/home/alunos/Música/trab_redes/trabalho_redes/src/vazaoCliente.txt", Float.toString(vazaoU), Float.toString(vazaoD));
-                    Arquivo.escreveArq("/home/alunos/Música/trab_redes/trabalho_redes/src/vazaoClienteTempo.txt", Float.toString(tDecorrido/ 1000.0F), Float.toString(tDecorrido2/ 1000.0F));
+                    Arquivo.escreveArq("src/vazaoCliente.txt", Float.toString(vazaoU), Float.toString(vazaoD));
+                    Arquivo.escreveArq("src/vazaoClienteTempo.txt", Float.toString(tDecorrido/ 1000.0F), Float.toString(tDecorrido2/ 1000.0F));
                 } catch (SocketTimeoutException socketTimeoutException) {
+                    System.out.println("TimeOut Cliente.");
                 } catch (Exception e) {
                     System.err.println("ERRO: " + e.toString());
                 }
@@ -110,7 +113,3 @@ public class VazaoClienteSessao implements Runnable {
 
     }
 }
-
-// if (vazao >= 1024) { vazao /= 1024 (float) ; uniade="K"}
-// if (vazao >= 1024) { vazao /= 1024 (float) ; uniade="M"}
-// if (vazao >= 1024) { vazao /= 1024 (float) ; uniade="G"}
